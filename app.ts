@@ -1,14 +1,12 @@
 class App {
     notes: any[]
-    $notes: any
+    $notes: HTMLDivElement | null
     $form: any
-    $noteTitle: any
-    $noteText: any
+    $noteTitle: HTMLInputElement | null
+    $noteText: HTMLInputElement | null
     $formButtons: any
     $placeholder: any
-    $submitButton: any
-    closeButton: any
-    submitButton: any
+    $submitButton: HTMLButtonElement | null
 
     constructor() {
         this.notes = []
@@ -20,9 +18,6 @@ class App {
         this.$formButtons = document.querySelector('#form-buttons')
         this.$placeholder = document.querySelector('#placeholder')
         this.$submitButton = document.querySelector('#submit-button')
-
-        this.closeButton = document.querySelector('#close-button')
-        this.submitButton = document.querySelector('#submit-button')
 
         this.addEventListeners()
     }
