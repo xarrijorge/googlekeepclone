@@ -349,7 +349,7 @@ input:focus {
     border-radius: 0.5rem;
 }
 
-.modal-close-button {
+.modal-button {
     float: right;
     margin: 0.2em 0;
     box-sizing: border-box;
