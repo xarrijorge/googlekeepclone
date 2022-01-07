@@ -2,6 +2,7 @@ var App = /** @class */ (function () {
     function App() {
         this.notes = [];
         this.id = 0;
+        // Getting HTML elements
         this.$notes = document.querySelector('#notes');
         this.$form = document.querySelector('#form');
         this.$noteTitle = document.querySelector('#note-title');
@@ -13,6 +14,7 @@ var App = /** @class */ (function () {
         this.$modalTitle = document.querySelector('.modal-title');
         this.$modalText = document.querySelector('.modal-text');
         this.$modalCloseButton = document.querySelector('.modal-close-button');
+        this.$editButton = document.querySelector('.toolbar-edit');
         this.addEventListeners();
     }
     App.prototype.handleFormClick = function (event) {
@@ -52,21 +54,38 @@ var App = /** @class */ (function () {
         this.$noteText.value = '';
     };
     App.prototype.openModal = function (event) {
-        var $selectedNote = event.target.closest('.note');
-        var _a = $selectedNote.children, $noteTitle = _a[0], $noteText = _a[1];
-        console.log($noteTitle.innerText);
-        this.id = $selectedNote.dataset.id;
-        if (!$selectedNote) {
-            return;
-        }
-        if ($selectedNote) {
-            this.$modalTitle.value = $noteTitle.innerText;
-            this.$modalText.value = $noteText.innerText;
+        var $selectedNote = event.target.closest('.toolbar-edit');
+        console.log(event.target);
+        if (event.target.classList.contains('fa-edit')) {
             this.$modal.classList.toggle('open-modal');
         }
+        // const [$noteTitle, $noteText] = $selectedNote.children
+        // console.log($noteTitle.innerText)
+        // this.id = $selectedNote.dataset.id
+        // if (!$selectedNote) {
+        //     return
+        // }
+        // if ($selectedNote) {
+        //     this.$modalTitle.value = $noteTitle.innerText
+        //     this.$modalText.value = $noteText.innerText
+        //     this.$modal.classList.toggle('open-modal')
+        // }
     };
+    // editNote() {
+    //     const note = this.notes.find((note: any) => note.id === this.id)
+    //     console.log(note)
+    // }
     App.prototype.displayNotes = function () {
         var _this = this;
+        var colors = [
+            'green',
+            'coral',
+            'darkorange',
+            'slateblue',
+            'deeppink',
+            'gold',
+        ];
+        colors[Math.floor(Math.random() * colors.length)];
         this.$notes.innerHTML = '';
         this.$placeholder.style.display = 'none';
         this.notes.forEach(function (note) {
@@ -74,7 +93,7 @@ var App = /** @class */ (function () {
             $note.classList.add('note');
             $note.dataset.id = note.id;
             $note.style.backgroundColor = note.color;
-            $note.innerHTML = "\n                <div class=\"note-header\">\n                    <h2 class=\"note-title\">".concat(note.title, "</h2>\n                                      \n                </div>\n                <div class=\"note-body\">\n                    <p class=\"note-text\">").concat(note.text, "</p>\n                </div>\n                 <div class=\"toolbar\">\n                    <button class=\"toolbar-color\">\n                        <i class=\"fas fa-palette\"></i>\n                    </button>\n                    <button class=\"toolbar-delete\">\n                        <i class=\"fas fa-trash-alt\"></i>\n                    </button>\n\n                    </div>\n\n            ");
+            $note.innerHTML = "\n                <div class=\"note-header\">\n                    <h2 class=\"note-title\">".concat(note.title, "</h2>\n                                      \n                </div>\n                <div class=\"note-body\">\n                    <p class=\"note-text\">").concat(note.text, "</p>\n                </div>\n                 <div class=\"toolbar\">\n                    <span class=\"toolbar-delete\" style=\"color: tomato\" >\n                        <i class=\"fas fa-trash-alt\"></i>\n                    </span>\n                    <span class=\"toolbar-color\" style=\"color: ").concat(colors[Math.floor(Math.random() * colors.length)], "\">\n                        <i class=\"fas fa-palette\"></i>\n                    </span>\n                    <span class=\"toolbar-edit\" style=\"color: mediumslateblue\">\n                        <i class=\"fas fa-edit\"></i>\n                    </span>\n                </div>\n\n            ");
             _this.$notes.appendChild($note);
         });
     };

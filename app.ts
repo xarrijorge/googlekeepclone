@@ -13,11 +13,13 @@ class App {
     $modalTitle: any
     $modalText: any
     $modalCloseButton: HTMLButtonElement | null
+    $editButton: HTMLSpanElement | null
 
     constructor() {
         this.notes = []
         this.id = 0
 
+        // Getting HTML elements
         this.$notes = document.querySelector('#notes')
         this.$form = document.querySelector('#form')
         this.$noteTitle = document.querySelector('#note-title')
@@ -29,6 +31,7 @@ class App {
         this.$modalTitle = document.querySelector('.modal-title')
         this.$modalText = document.querySelector('.modal-text')
         this.$modalCloseButton = document.querySelector('.modal-close-button')
+        this.$editButton = document.querySelector('.toolbar-edit')
 
         this.addEventListeners()
     }
@@ -73,24 +76,41 @@ class App {
     }
 
     openModal(event: any) {
-        const $selectedNote = event.target.closest('.note')
-        const [$noteTitle, $noteText] = $selectedNote.children
-
-        console.log($noteTitle.innerText)
-
-        this.id = $selectedNote.dataset.id
-        if (!$selectedNote) {
-            return
-        }
-
-        if ($selectedNote) {
-            this.$modalTitle.value = $noteTitle.innerText
-            this.$modalText.value = $noteText.innerText
+        const $selectedNote = event.target.closest('.toolbar-edit')
+        console.log(event.target)
+        if (event.target.classList.contains('fa-edit')) {
             this.$modal.classList.toggle('open-modal')
         }
+        // const [$noteTitle, $noteText] = $selectedNote.children
+
+        // console.log($noteTitle.innerText)
+
+        // this.id = $selectedNote.dataset.id
+        // if (!$selectedNote) {
+        //     return
+        // }
+
+        // if ($selectedNote) {
+        //     this.$modalTitle.value = $noteTitle.innerText
+        //     this.$modalText.value = $noteText.innerText
+        //     this.$modal.classList.toggle('open-modal')
+        // }
     }
+    // editNote() {
+    //     const note = this.notes.find((note: any) => note.id === this.id)
+    //     console.log(note)
+    // }
 
     displayNotes() {
+        const colors: string[] = [
+            'green',
+            'coral',
+            'darkorange',
+            'slateblue',
+            'deeppink',
+            'gold',
+        ]
+        colors[Math.floor(Math.random() * colors.length)]
         this.$notes.innerHTML = ''
         this.$placeholder.style.display = 'none'
         this.notes.forEach((note: any) => {
@@ -107,14 +127,18 @@ class App {
                     <p class="note-text">${note.text}</p>
                 </div>
                  <div class="toolbar">
-                    <button class="toolbar-color">
-                        <i class="fas fa-palette"></i>
-                    </button>
-                    <button class="toolbar-delete">
+                    <span class="toolbar-delete" style="color: tomato" >
                         <i class="fas fa-trash-alt"></i>
-                    </button>
-
-                    </div>
+                    </span>
+                    <span class="toolbar-color" style="color: ${
+                        colors[Math.floor(Math.random() * colors.length)]
+                    }">
+                        <i class="fas fa-palette"></i>
+                    </span>
+                    <span class="toolbar-edit" style="color: mediumslateblue">
+                        <i class="fas fa-edit"></i>
+                    </span>
+                </div>
 
             `
             this.$notes.appendChild($note)
