@@ -14,7 +14,7 @@ var App = /** @class */ (function () {
         this.$modalTitle = document.querySelector('.modal-title');
         this.$modalText = document.querySelector('.modal-text');
         this.$modalCloseButton = document.querySelector('.modal-close-button');
-        this.$editButton = document.querySelector('.toolbar-edit');
+        this.$editButton = document.querySelector('.fa-edit');
         this.addEventListeners();
     }
     App.prototype.handleFormClick = function (event) {
@@ -54,21 +54,22 @@ var App = /** @class */ (function () {
         this.$noteText.value = '';
     };
     App.prototype.openModal = function (event) {
-        var $selectedNote = event.target.closest('.toolbar-edit');
-        console.log(event.target);
+        event.stopPropagation();
         if (event.target.classList.contains('fa-edit')) {
-            this.$modal.classList.toggle('open-modal');
+            this.$modal.classList.add('open-modal');
         }
-        // const [$noteTitle, $noteText] = $selectedNote.children
-        // console.log($noteTitle.innerText)
+        var $selectedNote = event === null || event === void 0 ? void 0 : event.target.closest('.note');
+        var _a = $selectedNote.children, $noteTitle = _a[0], $noteText = _a[1];
+        if ($noteTitle && $noteText) {
+            this.$modalTitle.value = $noteTitle.innerText;
+            this.$modalText.value = $noteText.innerText;
+            this.id = Number($selectedNote.dataset.id);
+            // this.$modal.classList.toggle('open-modal')
+        }
+        console.log(this.notes[this.id - 1]);
         // this.id = $selectedNote.dataset.id
         // if (!$selectedNote) {
         //     return
-        // }
-        // if ($selectedNote) {
-        //     this.$modalTitle.value = $noteTitle.innerText
-        //     this.$modalText.value = $noteText.innerText
-        //     this.$modal.classList.toggle('open-modal')
         // }
     };
     // editNote() {
