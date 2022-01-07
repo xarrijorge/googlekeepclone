@@ -1,5 +1,5 @@
 class App {
-    notes: any[]
+    notes: any
     id: number
 
     $notes: HTMLDivElement | null
@@ -13,10 +13,25 @@ class App {
     $modalTitle: any
     $modalText: any
     $modalCloseButton: HTMLButtonElement | null
+    $modalDoneButton: HTMLButtonElement | null
     $editButton: HTMLSpanElement | null
 
     constructor() {
-        this.notes = []
+        this.notes = [
+            {
+                id: 2,
+                title: 'Water Pokemon',
+                text: 'Swarmpert',
+                color: 'white',
+            },
+            { id: 1, title: 'Fire Pokemon', text: 'Blaziken', color: 'white' },
+            {
+                id: 3,
+                title: 'Super Legendary',
+                text: 'Mega Mewtwo Y',
+                color: 'white',
+            },
+        ]
         this.id = 0
 
         // Getting HTML elements
@@ -30,8 +45,9 @@ class App {
         this.$modal = document.querySelector('.modal')
         this.$modalTitle = document.querySelector('.modal-title')
         this.$modalText = document.querySelector('.modal-text')
-        this.$modalCloseButton = document.querySelector('.modal-close-button')
         this.$editButton = document.querySelector('.fa-edit')
+        this.$modalCloseButton = document.querySelector('#modal-close')
+        this.$modalDoneButton = document.querySelector('#modal-done')
 
         this.addEventListeners()
     }
@@ -43,9 +59,13 @@ class App {
     }
 
     addEventListeners() {
+        document.body.addEventListener('load', () => {
+            this.displayNotes()
+        })
         document.body.addEventListener('click', (event: Event) => {
             this.handleFormClick(event)
             this.openModal(event)
+            this.deleteNote(event)
         })
         this.$submitButton.addEventListener('click', (event: Event) => {
             event.preventDefault()
@@ -60,6 +80,16 @@ class App {
                 this.displayNotes()
                 this.closeForm()
             }
+        })
+
+        this.$modalCloseButton.addEventListener('click', (event: Event) => {
+            event.stopPropagation()
+            this.$modal.classList.remove('open-modal')
+        })
+        this.$modalDoneButton.addEventListener('click', (event: Event) => {
+            event.stopPropagation()
+            this.editNote()
+            this.$modal.classList.remove('open-modal')
         })
     }
     openForm() {
@@ -81,25 +111,37 @@ class App {
             this.$modal.classList.add('open-modal')
         }
         const $selectedNote = event?.target.closest('.note')
+        if (!$selectedNote) return
         const [$noteTitle, $noteText] = $selectedNote.children
 
         if ($noteTitle && $noteText) {
             this.$modalTitle.value = $noteTitle.innerText
             this.$modalText.value = $noteText.innerText
             this.id = Number($selectedNote.dataset.id)
-            // this.$modal.classList.toggle('open-modal')
         }
         console.log(this.notes[this.id - 1])
-
-        // this.id = $selectedNote.dataset.id
-        // if (!$selectedNote) {
-        //     return
-        // }
     }
-    // editNote() {
-    //     const note = this.notes.find((note: any) => note.id === this.id)
-    //     console.log(note)
-    // }
+    editNote() {
+        const note = this.notes.find((note: any) => note.id === this.id)
+        note.title = this.$modalTitle.value
+        note.text = this.$modalText.value
+        this.displayNotes()
+        console.log(note)
+    }
+    deleteNote(event: any) {
+        event.stopPropagation()
+        const $selectedNote = event?.target.closest('.note')
+        if (!$selectedNote) return
+        this.id = Number($selectedNote.dataset.id)
+        if (event.target.classList.contains('fa-trash')) {
+            const note = this.notes.find((note: any) => note.id === this.id)
+            confirm(`Are you sure you want to delete ${note.title}?`)
+                ? this.notes.splice(this.notes.indexOf(note), 1)
+                    ? this.displayNotes()
+                    : null
+                : null
+        }
+    }
 
     displayNotes() {
         const colors: string[] = [
@@ -128,7 +170,7 @@ class App {
                 </div>
                  <div class="toolbar">
                     <span class="toolbar-delete" style="color: tomato" >
-                        <i class="fas fa-trash-alt"></i>
+                        <i class="fas fa-trash"></i>
                     </span>
                     <span class="toolbar-color" style="color: ${
                         colors[Math.floor(Math.random() * colors.length)]
@@ -143,11 +185,6 @@ class App {
             `
             this.$notes.appendChild($note)
         })
-    }
-
-    selectNote(event: any) {
-        const selectedNote = event?.target.closest('.note')
-        const [$noteTitle, $noteText] = selectedNote.children
     }
 }
 

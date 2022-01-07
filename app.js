@@ -1,6 +1,20 @@
 var App = /** @class */ (function () {
     function App() {
-        this.notes = [];
+        this.notes = [
+            {
+                id: 2,
+                title: 'Water Pokemon',
+                text: 'Swarmpert',
+                color: 'white'
+            },
+            { id: 1, title: 'Fire Pokemon', text: 'Blaziken', color: 'white' },
+            {
+                id: 3,
+                title: 'Super Legendary',
+                text: 'Mega Mewtwo Y',
+                color: 'white'
+            },
+        ];
         this.id = 0;
         // Getting HTML elements
         this.$notes = document.querySelector('#notes');
@@ -13,8 +27,9 @@ var App = /** @class */ (function () {
         this.$modal = document.querySelector('.modal');
         this.$modalTitle = document.querySelector('.modal-title');
         this.$modalText = document.querySelector('.modal-text');
-        this.$modalCloseButton = document.querySelector('.modal-close-button');
         this.$editButton = document.querySelector('.fa-edit');
+        this.$modalCloseButton = document.querySelector('#modal-close');
+        this.$modalDoneButton = document.querySelector('#modal-done');
         this.addEventListeners();
     }
     App.prototype.handleFormClick = function (event) {
@@ -23,9 +38,13 @@ var App = /** @class */ (function () {
     };
     App.prototype.addEventListeners = function () {
         var _this = this;
+        document.body.addEventListener('load', function () {
+            _this.displayNotes();
+        });
         document.body.addEventListener('click', function (event) {
             _this.handleFormClick(event);
             _this.openModal(event);
+            _this.deleteNote(event);
         });
         this.$submitButton.addEventListener('click', function (event) {
             event.preventDefault();
@@ -39,6 +58,15 @@ var App = /** @class */ (function () {
                 _this.displayNotes();
                 _this.closeForm();
             }
+        });
+        this.$modalCloseButton.addEventListener('click', function (event) {
+            event.stopPropagation();
+            _this.$modal.classList.remove('open-modal');
+        });
+        this.$modalDoneButton.addEventListener('click', function (event) {
+            event.stopPropagation();
+            _this.editNote();
+            _this.$modal.classList.remove('open-modal');
         });
     };
     App.prototype.openForm = function () {
@@ -59,23 +87,40 @@ var App = /** @class */ (function () {
             this.$modal.classList.add('open-modal');
         }
         var $selectedNote = event === null || event === void 0 ? void 0 : event.target.closest('.note');
+        if (!$selectedNote)
+            return;
         var _a = $selectedNote.children, $noteTitle = _a[0], $noteText = _a[1];
         if ($noteTitle && $noteText) {
             this.$modalTitle.value = $noteTitle.innerText;
             this.$modalText.value = $noteText.innerText;
             this.id = Number($selectedNote.dataset.id);
-            // this.$modal.classList.toggle('open-modal')
         }
         console.log(this.notes[this.id - 1]);
-        // this.id = $selectedNote.dataset.id
-        // if (!$selectedNote) {
-        //     return
-        // }
     };
-    // editNote() {
-    //     const note = this.notes.find((note: any) => note.id === this.id)
-    //     console.log(note)
-    // }
+    App.prototype.editNote = function () {
+        var _this = this;
+        var note = this.notes.find(function (note) { return note.id === _this.id; });
+        note.title = this.$modalTitle.value;
+        note.text = this.$modalText.value;
+        this.displayNotes();
+        console.log(note);
+    };
+    App.prototype.deleteNote = function (event) {
+        var _this = this;
+        event.stopPropagation();
+        var $selectedNote = event === null || event === void 0 ? void 0 : event.target.closest('.note');
+        if (!$selectedNote)
+            return;
+        this.id = Number($selectedNote.dataset.id);
+        if (event.target.classList.contains('fa-trash')) {
+            var note = this.notes.find(function (note) { return note.id === _this.id; });
+            confirm("Are you sure you want to delete ".concat(note.title, "?"))
+                ? this.notes.splice(this.notes.indexOf(note), 1)
+                    ? this.displayNotes()
+                    : null
+                : null;
+        }
+    };
     App.prototype.displayNotes = function () {
         var _this = this;
         var colors = [
@@ -94,13 +139,9 @@ var App = /** @class */ (function () {
             $note.classList.add('note');
             $note.dataset.id = note.id;
             $note.style.backgroundColor = note.color;
-            $note.innerHTML = "\n                <div class=\"note-header\">\n                    <h2 class=\"note-title\">".concat(note.title, "</h2>\n                                      \n                </div>\n                <div class=\"note-body\">\n                    <p class=\"note-text\">").concat(note.text, "</p>\n                </div>\n                 <div class=\"toolbar\">\n                    <span class=\"toolbar-delete\" style=\"color: tomato\" >\n                        <i class=\"fas fa-trash-alt\"></i>\n                    </span>\n                    <span class=\"toolbar-color\" style=\"color: ").concat(colors[Math.floor(Math.random() * colors.length)], "\">\n                        <i class=\"fas fa-palette\"></i>\n                    </span>\n                    <span class=\"toolbar-edit\" style=\"color: mediumslateblue\">\n                        <i class=\"fas fa-edit\"></i>\n                    </span>\n                </div>\n\n            ");
+            $note.innerHTML = "\n                <div class=\"note-header\">\n                    <h2 class=\"note-title\">".concat(note.title, "</h2>\n                                      \n                </div>\n                <div class=\"note-body\">\n                    <p class=\"note-text\">").concat(note.text, "</p>\n                </div>\n                 <div class=\"toolbar\">\n                    <span class=\"toolbar-delete\" style=\"color: tomato\" >\n                        <i class=\"fas fa-trash\"></i>\n                    </span>\n                    <span class=\"toolbar-color\" style=\"color: ").concat(colors[Math.floor(Math.random() * colors.length)], "\">\n                        <i class=\"fas fa-palette\"></i>\n                    </span>\n                    <span class=\"toolbar-edit\" style=\"color: mediumslateblue\">\n                        <i class=\"fas fa-edit\"></i>\n                    </span>\n                </div>\n\n            ");
             _this.$notes.appendChild($note);
         });
-    };
-    App.prototype.selectNote = function (event) {
-        var selectedNote = event === null || event === void 0 ? void 0 : event.target.closest('.note');
-        var _a = selectedNote.children, $noteTitle = _a[0], $noteText = _a[1];
     };
     return App;
 }());

@@ -288,7 +288,7 @@ input:focus {
     margin: 0 3px;
     cursor: pointer;
     color: #202124;
-    opacity: 0.71;
+    /* opacity: 0.71; */
 }
 
 .toolbar-color-modal {
