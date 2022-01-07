@@ -27,9 +27,9 @@ var App = /** @class */ (function () {
         this.$modal = document.querySelector('.modal');
         this.$modalTitle = document.querySelector('.modal-title');
         this.$modalText = document.querySelector('.modal-text');
-        this.$editButton = document.querySelector('.fa-edit');
         this.$modalCloseButton = document.querySelector('#modal-close');
         this.$modalDoneButton = document.querySelector('#modal-done');
+        this.$colorInput = document.querySelector('#colorinput');
         this.addEventListeners();
     }
     App.prototype.handleFormClick = function (event) {
@@ -67,6 +67,9 @@ var App = /** @class */ (function () {
             event.stopPropagation();
             _this.editNote();
             _this.$modal.classList.remove('open-modal');
+        });
+        this.$colorInput.addEventListener('change', function (event) {
+            console.log(event.target.value);
         });
     };
     App.prototype.openForm = function () {
@@ -121,6 +124,13 @@ var App = /** @class */ (function () {
                 : null;
         }
     };
+    App.prototype.changeNoteColor = function (event) {
+        event.stopPropagation();
+        var $selectedNote = event === null || event === void 0 ? void 0 : event.target.closest('.note');
+        if (!$selectedNote)
+            return;
+        $selectedNote.style.backgroundColor = event.target.value;
+    };
     App.prototype.displayNotes = function () {
         var _this = this;
         var colors = [
@@ -139,7 +149,7 @@ var App = /** @class */ (function () {
             $note.classList.add('note');
             $note.dataset.id = note.id;
             $note.style.backgroundColor = note.color;
-            $note.innerHTML = "\n                <div class=\"note-header\">\n                    <h2 class=\"note-title\">".concat(note.title, "</h2>\n                                      \n                </div>\n                <div class=\"note-body\">\n                    <p class=\"note-text\">").concat(note.text, "</p>\n                </div>\n                 <div class=\"toolbar\">\n                    <span class=\"toolbar-delete\" style=\"color: tomato\" >\n                        <i class=\"fas fa-trash\"></i>\n                    </span>\n                    <span class=\"toolbar-color\" style=\"color: ").concat(colors[Math.floor(Math.random() * colors.length)], "\">\n                        <i class=\"fas fa-palette\"></i>\n                    </span>\n                    <span class=\"toolbar-edit\" style=\"color: mediumslateblue\">\n                        <i class=\"fas fa-edit\"></i>\n                    </span>\n                </div>\n\n            ");
+            $note.innerHTML = "\n                <div class=\"note-header\">\n                    <h2 class=\"note-title\">".concat(note.title, "</h2>\n                                      \n                </div>\n                <div class=\"note-body\">\n                    <p class=\"note-text\">").concat(note.text, "</p>\n                </div>\n                 <div class=\"toolbar\">\n                    <span class=\"toolbar-delete\" style=\"color: tomato\" >\n                        <i class=\"fas fa-trash\"></i>\n                    </span>\n                    <label for=\"colorinput\" class=\"toolbar-color\" style=\"color: ").concat(colors[Math.floor(Math.random() * colors.length)], "\">\n                        <input type=\"color\" value=\"").concat(note.color, "\" id=\"colorinput\" hidden/>\n                        <i class=\"fas fa-palette\"></i>\n                    </label>\n                   <span class=\"toolbar-edit\" style=\"color: mediumslateblue\">\n                        <i class=\"fas fa-edit\"></i>\n                    </span>\n                </div>\n\n            ");
             _this.$notes.appendChild($note);
         });
     };

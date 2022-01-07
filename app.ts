@@ -14,7 +14,7 @@ class App {
     $modalText: any
     $modalCloseButton: HTMLButtonElement | null
     $modalDoneButton: HTMLButtonElement | null
-    $editButton: HTMLSpanElement | null
+    $colorInput: any
 
     constructor() {
         this.notes = [
@@ -45,9 +45,9 @@ class App {
         this.$modal = document.querySelector('.modal')
         this.$modalTitle = document.querySelector('.modal-title')
         this.$modalText = document.querySelector('.modal-text')
-        this.$editButton = document.querySelector('.fa-edit')
         this.$modalCloseButton = document.querySelector('#modal-close')
         this.$modalDoneButton = document.querySelector('#modal-done')
+        this.$colorInput = document.querySelector('#colorinput')
 
         this.addEventListeners()
     }
@@ -91,7 +91,12 @@ class App {
             this.editNote()
             this.$modal.classList.remove('open-modal')
         })
+
+        this.$colorInput.addEventListener('change', (event: any) => {
+            console.log(event.target.value)
+        })
     }
+
     openForm() {
         this.$form.classList.add('form-open')
         this.$noteTitle.style.display = 'block'
@@ -142,6 +147,12 @@ class App {
                 : null
         }
     }
+    changeNoteColor(event: any) {
+        event.stopPropagation()
+        const $selectedNote = event?.target.closest('.note')
+        if (!$selectedNote) return
+        $selectedNote.style.backgroundColor = event.target.value
+    }
 
     displayNotes() {
         const colors: string[] = [
@@ -172,12 +183,15 @@ class App {
                     <span class="toolbar-delete" style="color: tomato" >
                         <i class="fas fa-trash"></i>
                     </span>
-                    <span class="toolbar-color" style="color: ${
+                    <label for="colorinput" class="toolbar-color" style="color: ${
                         colors[Math.floor(Math.random() * colors.length)]
                     }">
+                        <input type="color" value="${
+                            note.color
+                        }" id="colorinput" hidden/>
                         <i class="fas fa-palette"></i>
-                    </span>
-                    <span class="toolbar-edit" style="color: mediumslateblue">
+                    </label>
+                   <span class="toolbar-edit" style="color: mediumslateblue">
                         <i class="fas fa-edit"></i>
                     </span>
                 </div>
