@@ -13,17 +13,18 @@
   <title>track</title>
 </head>
 
-<body>
+<body class="light">
   <!-- Modal markup -->
- <div class="modal">
-       <div class="modal-content">
-          <input class="modal-title" placeholder="Title" type="text" required>   
-          <input class="modal-text" placeholder="Take a note..." type="text" required>   
-          <button class="modal-button done" id="modal-done">Done</button>
-          <button class="modal-button close" id="modal-close">Close</button>
-        </div>    
-    </div>   
-  </div>
+  <div class="modal">
+    <div class="modal-content">
+      <input class="modal-title" placeholder="Title" type="text" required>
+      <textarea class="modal-text" placeholder="Take a note..." required></textarea>
+      <div class="buttonBox">
+      <button class="modal-button close" id="modal-close"><i class="fas fa-times"></i></button>
+      <button class="modal-button done" id="modal-done"><i class="fas fa-check"></i></button>
+      </div>
+    </div>
+  </div >
   <!-- main content -->
   <main>
     <header>
@@ -46,7 +47,8 @@
       <p id="placeholder-text">Notes you add appear here</p>
     </div>
   </main>
-  <script src="app.js"></script>
+  <!-- <script>var exports = {"__esModule": true};</script> -->
+  <script src="./dist/bundle.js" ></script>
 </body>
 
 </html>
