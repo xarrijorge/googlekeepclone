@@ -14,7 +14,6 @@ const editNote = (
 }
 
 export const changeColor = (event: any, state: any) => {
-    // if (event.target.matches('.fa-palette')) {
     const noteElem = event.target.parentElement.parentElement.parentElement
     state.id = noteElem.dataset.id
 

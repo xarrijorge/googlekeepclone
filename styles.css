@@ -112,7 +112,6 @@ header {
     font-size: 1rem;
     font-weight: 500;
     line-height: 1.5rem;
-    /* box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); */
     letter-spacing: 0.00625em;
     border: 0;
     overflow: hidden;
@@ -182,7 +181,6 @@ input:focus {
 .note {
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; */
     margin: 16px;
     width: 250px;
     height: max-content;
@@ -190,7 +188,6 @@ input:focus {
     border-color: #e0e0e0;
     border: 1px solid #d3d3d3;
     box-sizing: border-box;
-    /* overflow: hidden; */
     position: relative;
     border-radius: 8px;
     transition-duration: 0.218s;
@@ -260,7 +257,6 @@ input:focus {
     margin: 0 3px;
     cursor: pointer;
     color: #202124;
-    /* opacity: 0.71; */
 }
 
 .toolbar-color {
@@ -270,8 +266,6 @@ input:focus {
     outline: none;
     border-radius: 50%;
 }
-/* .toolbar-color-modal {
-} */
 
 #color-tooltip {
     border-bottom: 2px solid #fff;
@@ -309,7 +303,6 @@ input:focus {
     opacity: 0;
     visibility: hidden;
     transform: scale(1.1);
-    /* transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s; */
 }
 
 .modal-content {
