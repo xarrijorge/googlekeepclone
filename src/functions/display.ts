@@ -33,12 +33,7 @@ const displayNotes = (
                     <span class="toolbar-delete" style="color: tomato" >
                         <i class="fas fa-trash"></i>
                     </span>
-                    <span class="toolbar-color" style="color: ${
-                        colors[Math.floor(Math.random() * colors.length)]
-                    }">
-                        <i class="fas fa-palette"></i>
-                    </span>
-                   <span class="toolbar-edit" style="color: skyblue">
+                    <span class="toolbar-edit" style="color: skyblue">
                         <i class="fas fa-edit"></i>
                     </span>
                 </div>
@@ -55,3 +50,8 @@ const displayNotes = (
 }
 
 export default renderNotes
+// <span class="toolbar-color" style="color: ${
+//                         colors[Math.floor(Math.random() * colors.length)]
+//                     }">
+//                         <i class="fas fa-palette"></i>
+//                     </span>
