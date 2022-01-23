@@ -1,4 +1,6 @@
-import renderNotes from './functions/displayNotes'
+import renderNotes from './functions/display'
+import deleteNote from './functions/remove'
+import editNote, { changeColor } from './functions/edit'
 
 class App {
     state: any
@@ -39,6 +41,7 @@ class App {
                     color: 'white',
                 },
             ],
+            trash: JSON.parse(window.localStorage.getItem('trash')) ?? [],
             id: 0,
             meta: JSON.parse(window.localStorage.getItem('meta')) ?? {
                 theme: 'light',
@@ -72,14 +75,13 @@ class App {
     }
 
     addEventListeners() {
-        document.body.addEventListener('load', () => {
-            renderNotes(this.$notes, this.$placeholder, this.state)
-        })
         document.body.addEventListener('click', (event: Event) => {
             this.handleFormClick(event)
             this.openModal(event)
-            this.deleteNote(event)
+            deleteNote(event, this.$notes, this.$placeholder, this.state)
+            changeColor(event, this.state)
         })
+
         this.$submitButton.addEventListener('click', (event: Event) => {
             event.preventDefault()
             event.stopPropagation()
@@ -101,7 +103,13 @@ class App {
         })
         this.$modalDoneButton.addEventListener('click', (event: Event) => {
             event.stopPropagation()
-            this.editNote()
+            editNote(
+                this.$modalTitle,
+                this.$modalText,
+                this.$notes,
+                this.$placeholder,
+                this.state
+            )
             this.$modal.classList.remove('open-modal')
         })
     }
@@ -132,32 +140,6 @@ class App {
             this.$modalTitle.value = $noteTitle.innerText
             this.$modalText.value = $noteText.innerText
             this.state.id = Number($selectedNote.dataset.id)
-        }
-    }
-
-    editNote() {
-        const note = this.state.notes.find(
-            (note: any) => note.id === this.state.id
-        )
-        note.title = this.$modalTitle.value
-        note.text = this.$modalText.value
-        renderNotes(this.$notes, this.$placeholder, this.state)
-    }
-
-    deleteNote(event: any) {
-        event.stopPropagation()
-        const $selectedNote = event?.target.closest('.note')
-        if (!$selectedNote) return
-        this.state.id = Number($selectedNote.dataset.id)
-        if (event.target.classList.contains('fa-trash')) {
-            const note = this.state.notes.find(
-                (note: any) => note.id === this.state.id
-            )
-            confirm(`Are you sure you want to delete ${note.title}?`)
-                ? this.state.notes.splice(this.state.notes.indexOf(note), 1)
-                    ? renderNotes(this.$notes, this.$placeholder, this.state)
-                    : null
-                : null
         }
     }
 }
