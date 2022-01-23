@@ -6,7 +6,7 @@
     "license": "MIT",
     "scripts": {
         "start": "webpack serve",
-        "build": "webpack --config webpack.config.js"
+        "build": "webpack"
     },
     "dependencies": {
         "source-map-loader": "^3.0.1"
