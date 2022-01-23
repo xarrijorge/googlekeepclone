@@ -19,11 +19,6 @@ export const changeColor = (event: any, state: any) => {
     state.id = noteElem.dataset.id
 
     console.log(noteElem)
-    // const noteCoords = event.target.getBoundingClientRect()
-    // const xVal = noteCoords.left + window.scrollX
-    // const yVal = noteCoords.top + window.scrollY
-
-    // }
 }
 
 export default editNote
